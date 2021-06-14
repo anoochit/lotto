@@ -14,7 +14,7 @@ function sleep(time) {
 }
 
 contract('SwapProcess', async (accounts) => {
-  const investor = accounts[1]
+  const investor = accounts[0]
 
   it('deployed', async () => {
     const swapProcess = await SwapProcess.deployed()
@@ -49,6 +49,9 @@ contract('SwapProcess', async (accounts) => {
      const swapBalance = await lottoToken.balanceOf(SwapProcess.address)
      assert.notStrictEqual(swapBalance.toString(), 0, 'swap balance must not 0')
      console.log(' swap balance :', web3.utils.fromWei(swapBalance.toString(),'ether') , 'LTT')
+
+     swapEthBalance = await web3.eth.getBalance(SwapProcess.address)
+     console.log(' swap ETH balance :', web3.utils.fromWei(swapEthBalance.toString(),'ether') , 'ETH')
   })
 
   it('sell tokens', async () => {
@@ -68,9 +71,9 @@ contract('SwapProcess', async (accounts) => {
 })
 
 contract('Lottery', async (accounts) => {
-  const buyer1 = accounts[0]
+  const buyer1 = accounts[1]
   const buyer2 = accounts[2]
-  const buyer3 = accounts[4]
+  const buyer3 = accounts[3]
 
   it('lottery deployed', async () => {
     let lottery = await Lottery.deployed()
@@ -137,6 +140,9 @@ contract('Lottery', async (accounts) => {
       tokens('2'),
       'lottery LTT balance should be 2 LTT',
     )
+
+    swapEthBalance = await web3.eth.getBalance(SwapProcess.address)
+    console.log(' swap ETH balance :', web3.utils.fromWei(swapEthBalance.toString(),'ether') , 'ETH')
  
     //--- buyer2 buy 5 ltt, buyer3 buy 5 ltt
 
